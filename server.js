@@ -378,8 +378,11 @@ function streamFile(res, filePath, method) {
   const ext = path.extname(filePath).toLowerCase();
   res.statusCode = 200;
   res.setHeader('Content-Type', MIME[ext] || 'application/octet-stream');
-  if (ext === '.html') res.setHeader('Cache-Control', 'no-store');
-  else res.setHeader('Cache-Control', 'public, max-age=3600');
+  // Telegram Desktop/Android WebView may aggressively cache CSS/JS.
+  // Use no-store for all public files so UI updates are visible immediately.
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   if (method === 'HEAD') return res.end();
   fs.createReadStream(filePath).pipe(res);
 }

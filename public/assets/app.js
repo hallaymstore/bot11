@@ -44,7 +44,7 @@ function initData(){ return tg?.initData || ''; }
 function startParam(){ const q = new URLSearchParams(location.search); return tg?.initDataUnsafe?.start_param || q.get('tgWebAppStartParam') || q.get('startapp') || q.get('ref') || ''; }
 async function api(path, options={}){ const res = await fetch(path,{...options,headers:{'Content-Type':'application/json','X-Telegram-Init-Data':initData(),'X-Telegram-Start-Param':startParam(),...(options.headers||{})}}); const out = await res.json().catch(()=>({ok:false,error:'Invalid server response'})); if(!res.ok && !out.error) out.error='Server error'; return out; }
 
-async function boot(){ setupTelegram(); hydrateIcons(); bindEvents(); try{ const res = await api('/api/me'); if(!res.ok) throw new Error(res.error||'Profile yuklanmadi'); setData(res); renderAll(); startTimers(); }catch(e){ toast(e.message || 'Server error'); } finally{ setTimeout(()=>$('loadingScreen')?.classList.add('hide'),450); } }
+async function boot(){ setupTelegram(); hydrateIcons(); bindEvents(); try{ const res = await api('/api/me'); if(!res.ok) throw new Error(res.error||'Profile yuklanmadi'); setData(res); renderAll(); startTimers(); }catch(e){ toast(e.message || 'Server error'); } finally{ setTimeout(()=>{ const l=$('loadingScreen'); if(l){ l.classList.add('hide'); setTimeout(()=>{ l.style.display='none'; },420); } },450); } }
 function setData(next){ data=next; user=next.user; state=user.state; }
 function fmt(v){ const n=Number(v||0); if(n>=1e9)return(n/1e9).toFixed(2)+'B'; if(n>=1e6)return(n/1e6).toFixed(2)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'K'; return Math.floor(n).toLocaleString('en-US'); }
 function raw(v){ return Math.floor(Number(v||0)).toLocaleString('en-US'); }
