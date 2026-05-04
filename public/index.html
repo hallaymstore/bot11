@@ -1,200 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
   <meta name="theme-color" content="#070711" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Crypto Clicker Telegram Mini App" />
-  <title>Crypto Clicker</title>
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/assets/app.css" />
+  <title>Crypto Clicker Pro</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="/assets/app.css" />
 </head>
 <body>
-  <div class="bg-visuals" aria-hidden="true">
-    <div class="aurora"><span></span><span></span><span></span></div>
-    <div class="starfield"></div>
-    <div class="mesh"></div>
-    <div class="noise"></div>
-  </div>
-
-  <div id="loadingScreen" class="loading-screen">
-    <div class="loading-logo" data-icon="gem"></div>
-    <div class="loading-title">Crypto Clicker</div>
-    <div class="loading-bar"><span></span></div>
-  </div>
-
-  <div id="toast" class="toast"><span data-icon="sparkles"></span><span>Done</span></div>
+  <div class="bg"><span></span><span></span><span></span></div>
+  <div id="toast" class="toast">Done</div>
+  <div id="loadingScreen" class="loading"><div class="loaderCoin">💎</div><b>Crypto Clicker Pro</b><p>Loading gamer economy...</p></div>
 
   <main class="app">
     <header class="topbar">
-      <div class="brand">
-        <div class="logo"><span data-icon="gem"></span></div>
-        <div>
-          <small><span data-icon="sparkles"></span> Crypto Clicker</small>
-          <h1 id="helloText">Hi, Miner</h1>
-        </div>
-      </div>
-
-      <button class="league-pill" data-page-jump="rank" aria-label="Open rank screen">
-        <span>League</span>
-        <strong id="leagueText">Bronze</strong>
-      </button>
+      <div class="brand"><div class="logo" data-icon="gem"></div><div><small>Crypto Clicker Pro</small><h1 id="helloText">Hi, Miner</h1></div></div>
+      <button class="rankPill" data-page-jump="rank"><span id="leagueText">Bronze</span><b id="myRankSmall">#?</b></button>
     </header>
 
-    <section class="balance-card glass">
-      <div class="balance-row">
-        <div class="balance-main">
-          <div class="label">Total Balance</div>
-          <div class="balance-value">
-            <div class="coin-small">₿</div>
-            <span id="balanceText">0</span>
-          </div>
-          <p class="passive-text"><span data-icon="bot"></span><span><span id="passiveText">+0</span>/sec passive mining</span></p>
-        </div>
-        <button class="tap-chip" data-page-jump="boost" aria-label="Open upgrades">
-          <span><span data-icon="mouse-pointer-click"></span> Tap</span>
-          <strong id="tapRewardText">+1</strong>
-        </button>
+    <section class="balance glass">
+      <div class="balanceTop">
+        <div><p>Total Balance</p><h2><span class="coin">₿</span><span id="balanceText">0</span></h2><em><span id="passiveText">+0</span>/sec passive · <span id="energyCostText">1</span> energy/tap</em></div>
+        <div class="tapPower"><small>Tap</small><b id="tapRewardText">+1</b></div>
       </div>
-
-      <div class="progress-stack">
-        <div>
-          <div class="progress-meta">
-            <span><span data-icon="zap"></span> Energy</span>
-            <span id="energyText">0 / 0</span>
-          </div>
-          <div class="bar"><div id="energyBar" class="bar-fill"></div></div>
-        </div>
-
-        <div>
-          <div class="progress-meta">
-            <span id="levelText"><span data-icon="star"></span> Level 1 XP</span>
-            <span id="xpText">0 / 100</span>
-          </div>
-          <div class="bar"><div id="xpBar" class="bar-fill xp"></div></div>
-        </div>
+      <div class="bars">
+        <div class="barMeta"><span>⚡ Energy</span><span id="energyText">0 / 0</span></div><div class="bar"><i id="energyBar"></i></div>
+        <div class="barMeta"><span id="levelText">⭐ Level 1 XP</span><span id="xpText">0 / 100</span></div><div class="bar"><i id="xpBar"></i></div>
       </div>
     </section>
 
     <section id="page-mine" class="page active">
-      <div class="stats-grid">
-        <div class="stat-card glass">
-          <div class="stat-icon"><span data-icon="flame"></span></div>
-          <p>Multiplier</p>
-          <strong id="multiStat">1.00x</strong>
-        </div>
-        <div class="stat-card glass">
-          <div class="stat-icon"><span data-icon="battery-charging"></span></div>
-          <p>Max Energy</p>
-          <strong id="maxEnergyStat">1000</strong>
-        </div>
-        <div class="stat-card glass">
-          <div class="stat-icon"><span data-icon="calendar-days"></span></div>
-          <p>Streak</p>
-          <strong id="streakStat">0d</strong>
-        </div>
+      <div class="stats3">
+        <article class="glass"><i data-icon="flame"></i><small>Multiplier</small><b id="multiStat">1.00x</b></article>
+        <article class="glass"><i data-icon="battery"></i><small>Energy</small><b id="maxEnergyStat">0</b></article>
+        <article class="glass"><i data-icon="calendar"></i><small>Streak</small><b id="streakStat">0d</b></article>
       </div>
-
-      <div class="mine-zone" id="mineZone">
-        <div class="coin-aura"></div>
-        <div class="coin-orbit"></div>
-        <button class="coin-button" id="coinButton" aria-label="Tap to mine">
-          <div class="coin-rim"></div>
-          <div class="coin-inner"></div>
-          <div class="coin-symbol">
-            <span class="gem-icon"><span data-icon="gem"></span></span>
-            <b>TAP</b>
-            <small>TO MINE</small>
-          </div>
-        </button>
-      </div>
-
-      <div class="daily-card glass">
-        <div class="daily-head">
-          <div class="daily-icon"><span data-icon="gift"></span></div>
-          <div>
-            <h3 class="card-title">Daily Reward</h3>
-            <p class="card-text">Bugungi bonusni oling: <b>+2,500 coins</b>. Har kuni kirish streak va mukofotni oshiradi.</p>
-          </div>
-        </div>
-        <button id="dailyButton" class="white-btn"><span data-icon="gift"></span> Claim Daily Reward</button>
-      </div>
+      <div class="mineZone" id="mineZone"><div class="coinAura"></div><div class="coinOrbit"></div><button id="coinButton" class="bigCoin"><span data-icon="gem"></span><b>TAP</b><small>TO MINE</small></button></div>
+      <div class="daily glass"><div><b>Daily Reward</b><p>Streak qiling, bonus oshadi. Bugungi bonusni oling.</p></div><button id="dailyButton" class="primary">Claim</button></div>
+      <div class="upgradeTitle"><h3>Power Upgrades</h3><button data-page-jump="shop">Shop →</button></div>
+      <div id="upgradeList" class="cards"></div>
     </section>
 
-    <section id="page-boost" class="page">
-      <div class="section-head">
-        <div class="section-title-row">
-          <h2>Upgrade Center</h2>
-          <div class="section-badge"><span data-icon="rocket"></span></div>
-        </div>
-        <p>Tap kuchi, energy tank, auto miner va multiplier’ni kuchaytiring.</p>
-      </div>
-      <div id="upgradeList" class="list"></div>
-    </section>
-
-    <section id="page-tasks" class="page">
-      <div class="hero-card glass">
-        <div class="hero-mini-row">
-          <div class="hero-icon"><span data-icon="users-round"></span></div>
-          <div class="label">Referral bonus</div>
-        </div>
-        <h2>Do‘stlaringizni chaqiring. Coin ishlang.</h2>
-        <p class="card-text">Har bir aktiv do‘st birinchi mining sessiyasidan keyin sizga <b>+10,000 coins</b> olib keladi.</p>
-
-        <div class="invite-input">
-          <input id="inviteInput" readonly value="https://t.me/your_bot?start=ref_000001" />
-          <button id="copyInviteBtn"><span data-icon="copy"></span> Copy</button>
-        </div>
-      </div>
-
-      <div id="taskList" class="list"></div>
+    <section id="page-earn" class="page">
+      <div class="hero glass"><div class="heroIcon" data-icon="users"></div><small>Referral System</small><h2>Do‘st chaqiring, bonus oling</h2><p>Yangi referral uchun bonus, aktiv referral uchun yana qo‘shimcha reward.</p><div class="copyBox"><input id="inviteInput" readonly><button id="copyInviteBtn">Copy</button></div><div class="refStats"><span><b id="refCount">0</b> Referrals</span><span><b id="refActive">0</b> Active</span><span><b id="refEarned">0</b> Earned</span></div></div>
+      <div class="sectionHead"><h2>Earn Tasks</h2><p>Kanallar/guruhlarga obuna bo‘ling, reklama tasklarini bajaring va coin ishlang.</p></div>
+      <div id="taskList" class="cards"></div>
     </section>
 
     <section id="page-rank" class="page">
-      <div class="rank-hero glass">
-        <div class="trophy"><span data-icon="trophy"></span></div>
-        <div class="label">Current League</div>
-        <h2 id="rankHeroLeague">Bronze</h2>
-        <p>Total mined: <span id="totalMinedText">0</span> coins</p>
-      </div>
+      <div class="rankHero glass"><div data-icon="trophy"></div><small>Your position</small><h2 id="myRankHero">#?</h2><p id="myRankDesc">Leaderboard yuklanmoqda...</p></div>
+      <div class="globalStats" id="globalStats"></div>
+      <div class="sectionHead"><h2>Top Reyting</h2><button id="refreshLeaderboardBtn">Refresh</button></div>
+      <div id="leaderboardList" class="leaderboard"></div>
+    </section>
 
-      <div id="leaderboardCard" class="leaderboard-card glass">
-        <div class="leaderboard-head">
-          <div>
-            <h3>Leaderboard</h3>
-            <p>Top miners</p>
-          </div>
-          <button id="refreshLeaderboardBtn"><span data-icon="refresh-cw"></span></button>
-        </div>
-        <div id="leaderboardList" class="leaderboard-list"></div>
-      </div>
+    <section id="page-shop" class="page">
+      <div class="sectionHead"><h2>Gamer Shop</h2><p>Boost, miner, skin sotib oling. Keyin coinlarni game valyutalarga almashtirish mumkin bo‘ladi.</p></div>
+      <div id="shopList" class="cards"></div>
+      <div class="sectionHead"><h2>Game Coin Exchange</h2><p>PUBG UC, Free Fire Diamond va boshqa game coinlar — status: tez orada.</p></div>
+      <div id="exchangeList" class="cards"></div>
+    </section>
 
-      <div id="rankList" class="list"></div>
+    <section id="page-wallet" class="page">
+      <div class="sectionHead"><h2>Wallet & Market</h2><p>Withdraw, coin yuborish va sotish. Withdraw/sell status hozircha: <b>tez orada</b>.</p></div>
+      <div class="formCard glass"><h3>Coin yuborish</h3><p>Qabul qiluvchi referral code, Telegram ID yoki @username kiriting. Fee: <span id="feeText">5%</span></p><input id="sendTo" placeholder="Recipient code / ID / @username"><input id="sendAmount" type="number" placeholder="Amount, min 100"><button id="sendBtn" class="primary">Send Coins</button></div>
+      <div class="formCard glass"><h3>Withdraw status</h3><p>Tez orada. So‘rov admin panelga saqlanadi, coin yechilmaydi.</p><input id="withdrawAccount" placeholder="Wallet/card/contact"><input id="withdrawAmount" type="number" placeholder="Amount, min 10000"><button id="withdrawBtn" class="primary">Request Withdraw</button></div>
+      <div class="formCard glass"><h3>Coin sotish</h3><p>P2P market tez orada. Offer admin panelga tushadi.</p><input id="sellAmount" type="number" placeholder="Amount, min 10000"><input id="sellPrice" placeholder="Masalan: 10000 coin = 10 000 so'm"><button id="sellBtn" class="primary">Create Sell Offer</button></div>
     </section>
   </main>
 
-  <nav class="bottom-nav" aria-label="Bottom navigation">
-    <button class="nav-btn active" data-page="mine"><span data-icon="gem"></span>Mine</button>
-    <button class="nav-btn" data-page="boost"><span data-icon="rocket"></span>Boost</button>
-    <button class="nav-btn" data-page="tasks"><span data-icon="gift"></span>Tasks</button>
-    <button class="nav-btn" data-page="rank"><span data-icon="trophy"></span>Rank</button>
+  <nav class="nav">
+    <button class="active" data-page="mine"><i data-icon="gem"></i>Mine</button>
+    <button data-page="earn"><i data-icon="gift"></i>Earn</button>
+    <button data-page="rank"><i data-icon="trophy"></i>Rank</button>
+    <button data-page="shop"><i data-icon="gamepad"></i>Shop</button>
+    <button data-page="wallet"><i data-icon="wallet"></i>Wallet</button>
   </nav>
 
-  <div id="levelModal" class="modal-backdrop" role="dialog" aria-modal="true">
-    <div class="modal">
-      <div class="modal-icon"><span data-icon="sparkles"></span></div>
-      <h3>Level Up!</h3>
-      <p>Siz yangi levelga chiqdingiz. Bonus sifatida energy capacity oshdi. Mining davom etadi!</p>
-      <div class="modal-actions">
-        <button class="secondary-btn" id="closeModalBtn">Close</button>
-        <button class="primary-btn" id="modalBoostBtn"><span data-icon="rocket"></span> Open Boost</button>
-      </div>
-    </div>
-  </div>
+  <div id="modal" class="modal"><div class="modalBox"><div id="modalIcon" data-icon="sparkles"></div><h3 id="modalTitle">Title</h3><p id="modalText">Text</p><button id="modalClose" class="primary">OK</button></div></div>
 
-  <script src="/assets/app.js" defer></script>
+  <script src="/assets/app.js"></script>
 </body>
 </html>

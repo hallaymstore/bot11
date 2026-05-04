@@ -1,525 +1,90 @@
 'use strict';
 
 const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+const $ = id => document.getElementById(id);
 
 const ICONS = {
-  gem: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9Z"/><path d="m12 21 4-12-4-6-4 6 4 12Z"/><path d="M2 9h20"/></svg>',
-  sparkles: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8L4 11l6.1 2.2L12 19l1.9-5.8L20 11l-6.1-2.2Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></svg>',
-  bot: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>',
-  'mouse-pointer-click': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 9 5 12 1.8-5.2L21 14Z"/><path d="M7.2 2.2 8 5.1"/><path d="m5.1 8-2.9-.8"/><path d="M14 4.1 12 6"/><path d="m6 12-1.9 2"/></svg>',
-  zap: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.8-1.6l9.7-10.8a.5.5 0 0 1 .9.4L12 9h8a1 1 0 0 1 .8 1.6l-9.7 10.8a.5.5 0 0 1-.9-.4l1.8-7Z"/></svg>',
-  star: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8-4.2-4.1 5.9-.9Z"/></svg>',
-  flame: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c0-2 1-3.5 2.5-5 .9 1 1.5 2.2 1.5 3.5a3 3 0 1 1-6 0Z"/><path d="M12 2C9 5 7 7.5 7 11a5 5 0 0 0 10 0c0-3-2-5-5-9Z"/></svg>',
-  'battery-charging': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h1a2 2 0 0 1 2 2v1h1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2h-2"/><path d="M6 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h3"/><path d="m11 7-3 5h4l-3 5"/></svg>',
-  'calendar-days': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>',
-  gift: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8A2.5 2.5 0 0 1 12 5.5 2.5 2.5 0 0 1 16.5 8"/></svg>',
-  rocket: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1 1-1.5 2.5-1.5 4.5 2 0 3.5-.5 4.5-1.5"/><path d="M9 15 4 10l2-4 5 5"/><path d="M14 10 19 5l-4-2-5 5"/><path d="M14.5 4.5c2.8-.7 4.9-.3 6 .8.6 1.1 1.5 4-1.2 8.1-2.1 3.1-5.3 5.4-8.8 6.1L4.5 13.5c.7-3.5 3-6.7 6.1-8.8 1.4-.9 2.7-1.6 3.9-2.2Z"/><circle cx="15" cy="9" r="1"/></svg>',
-  'users-round': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.4-2-6.3-5-7.6"/><path d="M17 3.3a5 5 0 0 1 0 9.4"/></svg>',
-  copy: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
-  'copy-check': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 15 2 2 4-4"/><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
-  trophy: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.7V17c0 .6-.4 1-1 1H7v3h10v-3h-2c-.6 0-1-.4-1-1v-2.3"/><path d="M18 5h3v3a5 5 0 0 1-5 5"/><path d="M6 5H3v3a5 5 0 0 0 5 5"/><path d="M18 2H6v7a6 6 0 0 0 12 0Z"/></svg>',
-  'refresh-cw': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>',
-  pickaxe: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5 19 9"/><path d="M3 21 14 10"/><path d="M13 5c3-2 6-2 8 0-3 1-5 3-6 6l-5-5c1-.3 2-.7 3-1Z"/></svg>',
-  coins: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="5" rx="6" ry="3"/><path d="M2 5v4c0 1.7 2.7 3 6 3s6-1.3 6-3V5"/><path d="M2 9v4c0 1.7 2.7 3 6 3 1.1 0 2.2-.2 3-.5"/><path d="M2 13v4c0 1.7 2.7 3 6 3 1 0 2-.1 2.8-.4"/><ellipse cx="17" cy="14" rx="5" ry="2.5"/><path d="M12 14v4c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4"/></svg>',
-  'chevron-right': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
-  'badge-check': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.9 8.4a2 2 0 0 1 1-3.4h1.2a2 2 0 0 0 1.7-1l.6-1a2 2 0 0 1 3.4 0l.6 1a2 2 0 0 0 1.7 1h1.2a2 2 0 0 1 1 3.4l-1 .7a2 2 0 0 0-.7 2.1l.4 1.2a2 2 0 0 1-2.7 2.5l-1.1-.5a2 2 0 0 0-1.8 0l-1.1.5a2 2 0 0 1-2.7-2.5l.4-1.2a2 2 0 0 0-.7-2.1Z"/><path d="m9 12 2 2 4-4"/></svg>',
-  medal: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7.2 2h9.6L14 8h-4Z"/><circle cx="12" cy="15" r="6"/><path d="m12 12 1 2h2l-1.7 1.2.7 2-2-1.3-2 1.3.7-2L9 14h2Z"/></svg>',
-  award: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg>',
-  shield: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.6a1.3 1.3 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/></svg>',
-  'zap-off': '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m13 3-2 6h8l-3 4"/><path d="M11 17 9 21l1.1-7H4l3-5"/><path d="m2 2 20 20"/></svg>'
+  gem:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9Z"/><path d="m12 21 4-12-4-6-4 6 4 12Z"/><path d="M2 9h20"/></svg>',
+  sparkles:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8L4 11l6.1 2.2L12 19l1.9-5.8L20 11l-6.1-2.2Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M19 17v4"/><path d="M17 19h4"/></svg>',
+  bot:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>',
+  zap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.8-1.6l9.7-10.8a.5.5 0 0 1 .9.4L12 9h8a1 1 0 0 1 .8 1.6l-9.7 10.8a.5.5 0 0 1-.9-.4l1.8-7Z"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.4 0 2.8-.7 2.8-2.5 0-1.6-1.3-2.4-2.5-3.3C10.1 10.3 9 9.5 9 8c0-2 2-3.5 2-5 2.5 1.8 6 4.8 6 9a5 5 0 0 1-10 0c0-1.5.7-2.8 1.5-3.5Z"/></svg>',
+  battery:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="2" y="7" rx="2"/><path d="M22 11v2"/><path d="M6 11h4"/></svg>',
+  calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.4-2-6.3-5-7.6"/><path d="M17 3.3a5 5 0 0 1 0 9.4"/></svg>',
+  gift:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.7V17c0 .6-.4 1-1 1H7v3h10v-3h-2c-.6 0-1-.4-1-1v-2.3"/><path d="M18 5h3v3a5 5 0 0 1-5 5"/><path d="M6 5H3v3a5 5 0 0 0 5 5"/><path d="M18 2H6v7a6 6 0 0 0 12 0Z"/></svg>',
+  gamepad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="4"/></svg>',
+  wallet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v3h-5a2 2 0 0 0 0 4h5v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M18 12h.01"/></svg>',
+  pickaxe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5 19 9"/><path d="M3 21 14 10"/><path d="M13 5c3-2 6-2 8 0-3 1-5 3-6 6l-5-5c1-.3 2-.7 3-1Z"/></svg>',
+  coins:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="5" rx="6" ry="3"/><path d="M2 5v4c0 1.7 2.7 3 6 3s6-1.3 6-3V5"/><ellipse cx="17" cy="14" rx="5" ry="2.5"/><path d="M12 14v4c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5v-4"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>'
 };
 
 const upgrades = [
-  { id: 'tap', icon: 'pickaxe', title: 'Tap Power', description: '+3 coin per tap', baseCost: 900, className: 'grad-tap' },
-  { id: 'energy', icon: 'zap', title: 'Energy Tank', description: '+250 max energy', baseCost: 1250, className: 'grad-energy' },
-  { id: 'miner', icon: 'bot', title: 'Auto Miner', description: '+1 coin/sec passive', baseCost: 1800, className: 'grad-miner' },
-  { id: 'multi', icon: 'flame', title: 'Multiplier', description: '+0.15x tap bonus', baseCost: 2500, className: 'grad-multi' }
+  { id:'tap', icon:'pickaxe', title:'Tap Power', baseCost:900, growth:1.72, color:'gold', desc:'+2 coin per tap' },
+  { id:'energy', icon:'zap', title:'Energy Tank', baseCost:1400, growth:1.68, color:'', desc:'+180 max energy' },
+  { id:'miner', icon:'bot', title:'Auto Miner', baseCost:2600, growth:1.82, color:'pink', desc:'+1 coin/sec' },
+  { id:'multi', icon:'flame', title:'Multiplier', baseCost:4200, growth:1.9, color:'green', desc:'+0.10x bonus' },
+  { id:'recharge', icon:'battery', title:'Fast Recharge', baseCost:3200, growth:1.75, color:'', desc:'+1 energy/sec' },
+  { id:'critical', icon:'sparkles', title:'Critical Tap', baseCost:5200, growth:1.85, color:'gold', desc:'+2% x3 chance' }
 ];
 
-const tasks = [
-  { id: 'join_channel', icon: 'badge-check', title: 'Join Telegram Channel', reward: 500 },
-  { id: 'invite_friend', icon: 'users-round', title: 'Invite 1 friend', reward: 1200 },
-  { id: 'three_day', icon: 'calendar-days', title: 'Open app 3 days streak', reward: 900 },
-  { id: 'silver', icon: 'trophy', title: 'Reach Silver League', reward: 3000 }
-];
-
-const ranks = [
-  { name: 'Diamond', need: 250000, icon: 'gem', className: 'diamond' },
-  { name: 'Gold', need: 80000, icon: 'medal', className: 'gold' },
-  { name: 'Silver', need: 20000, icon: 'award', className: 'silver' },
-  { name: 'Bronze', need: 0, icon: 'shield', className: 'bronze' }
-];
-
+let data = null;
 let user = null;
 let state = null;
-let upgradeLevels = null;
-let leaderboard = [];
 let passiveTimer = null;
 let syncTimer = null;
 
-const $ = (id) => document.getElementById(id);
+function icon(name){ return ICONS[name] || ICONS.sparkles; }
+function hydrateIcons(root=document){ root.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = icon(el.dataset.icon); }); }
+function setupTelegram(){ try{ tg?.ready?.(); tg?.expand?.(); tg?.setHeaderColor?.('#070711'); tg?.setBackgroundColor?.('#070711'); tg?.disableVerticalSwipes?.(); }catch{} }
+function initData(){ return tg?.initData || ''; }
+function startParam(){ const q = new URLSearchParams(location.search); return tg?.initDataUnsafe?.start_param || q.get('tgWebAppStartParam') || q.get('startapp') || q.get('ref') || ''; }
+async function api(path, options={}){ const res = await fetch(path,{...options,headers:{'Content-Type':'application/json','X-Telegram-Init-Data':initData(),'X-Telegram-Start-Param':startParam(),...(options.headers||{})}}); const out = await res.json().catch(()=>({ok:false,error:'Invalid server response'})); if(!res.ok && !out.error) out.error='Server error'; return out; }
 
-function icon(name) {
-  return ICONS[name] || ICONS.sparkles;
-}
+async function boot(){ setupTelegram(); hydrateIcons(); bindEvents(); try{ const res = await api('/api/me'); if(!res.ok) throw new Error(res.error||'Profile yuklanmadi'); setData(res); renderAll(); startTimers(); }catch(e){ toast(e.message || 'Server error'); } finally{ setTimeout(()=>$('loadingScreen')?.classList.add('hide'),450); } }
+function setData(next){ data=next; user=next.user; state=user.state; }
+function fmt(v){ const n=Number(v||0); if(n>=1e9)return(n/1e9).toFixed(2)+'B'; if(n>=1e6)return(n/1e6).toFixed(2)+'M'; if(n>=1e3)return(n/1e3).toFixed(1)+'K'; return Math.floor(n).toLocaleString('en-US'); }
+function raw(v){ return Math.floor(Number(v||0)).toLocaleString('en-US'); }
+function tapReward(){ return Math.max(1, Math.floor(Number(state.tapPower||1)*Number(state.multiplier||1)*(1+Number(state.level||1)*0.012))); }
+function energyCost(){ return Math.max(1,1+Math.floor(Number(state.level||1)/12)); }
+function upgradeCost(item){ const lvl=Number(user.upgrades[item.id]||0); return Math.round(item.baseCost*Math.pow(item.growth,lvl)); }
+function haptic(type='light'){ try{ tg?.HapticFeedback?.impactOccurred?.(type); }catch{} }
+function notify(type='success'){ try{ tg?.HapticFeedback?.notificationOccurred?.(type); }catch{} }
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2200); }
+function modal(title,text,ic='sparkles'){ $('modalTitle').textContent=title; $('modalText').textContent=text; $('modalIcon').innerHTML=icon(ic); $('modal').classList.add('show'); }
+function escapeHTML(v){ return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 
-function hydrateIcons(root = document) {
-  root.querySelectorAll('[data-icon]').forEach((el) => {
-    const name = el.getAttribute('data-icon');
-    el.innerHTML = icon(name);
-  });
-}
+function renderAll(){ if(!data||!state)return; renderHeader(); renderBars(); renderStats(); renderUpgrades(); renderTasks(); renderLeaderboard(); renderGlobalStats(); renderShop(); renderExchange(); }
+function renderHeader(){ $('balanceText').textContent=fmt(state.balance); $('leagueText').textContent=state.league; $('tapRewardText').textContent='+'+fmt(tapReward()); $('passiveText').textContent='+'+fmt(state.miners||0); $('energyCostText').textContent=energyCost(); $('helloText').textContent='Hi, '+(user.firstName||'Miner'); const rank=data.myRank?.rank?'#'+data.myRank.rank:'#?'; $('myRankSmall').textContent=rank; const bot=data.status?.botUsername || 'your_bot'; $('inviteInput').value=`https://t.me/${bot}?startapp=ref_${state.referralCode}`; $('refCount').textContent=user.referrals||0; $('refActive').textContent=user.referralActive||0; $('refEarned').textContent=fmt(state.referralEarned||0); $('feeText').textContent=(data.stats?.transferFeePercent||5)+'%'; }
+function renderBars(){ const ep=Math.min(100,Math.max(0,state.energy/state.maxEnergy*100)); const xp=Math.min(100,Math.max(0,state.xp/state.xpToNext*100)); $('energyText').textContent=`${Math.floor(state.energy)} / ${Math.floor(state.maxEnergy)}`; $('energyBar').style.width=ep+'%'; $('levelText').textContent=`⭐ Level ${state.level} XP`; $('xpText').textContent=`${Math.floor(state.xp)} / ${Math.floor(state.xpToNext)}`; $('xpBar').style.width=xp+'%'; $('coinButton').classList.toggle('disabled',state.energy<energyCost()); }
+function renderStats(){ $('multiStat').textContent=Number(state.multiplier||1).toFixed(2)+'x'; $('maxEnergyStat').textContent=fmt(state.maxEnergy); $('streakStat').textContent=(state.streak||0)+'d'; const today=new Date().toISOString().slice(0,10); const claimed=state.claimedDailyDate===today; $('dailyButton').disabled=claimed; $('dailyButton').textContent=claimed?'Claimed ✅':'Claim'; }
+function renderUpgrades(){ const list=$('upgradeList'); list.innerHTML=''; upgrades.forEach(item=>{ const cost=upgradeCost(item), lvl=user.upgrades[item.id]||0, can=state.balance>=cost; const el=document.createElement('button'); el.className='card '+(can?'':'disabled'); el.innerHTML=`<div class="cardIcon ${item.color}">${icon(item.icon)}</div><div class="cardBody"><div class="cardTop"><h3>${item.title}</h3><span class="badge">Lv ${lvl}</span></div><p>${item.desc}</p><div class="cardActions"><span class="price">${icon('coins')} ${fmt(cost)}</span><span class="miniBtn">Upgrade</span></div></div>`; el.onclick=()=>buyUpgrade(item); list.appendChild(el); }); }
+function renderTasks(){ const list=$('taskList'); list.innerHTML=''; (data.tasks||[]).forEach(task=>{ const done=task.completed; const progress=task.progress?` · ${fmt(task.progress.current)}/${fmt(task.progress.target)}`:''; const el=document.createElement('div'); el.className='card '+(done?'disabled':''); el.innerHTML=`<div class="cardIcon ${done?'green':''}">${icon(done?'check':task.type==='subscribe'?'users':task.type==='referral'?'gift':'trophy')}</div><div class="cardBody"><div class="cardTop"><h3>${escapeHTML(task.title)}</h3><span class="badge ${done?'done':''}">${done?'Done':fmt(task.reward)+' coin'}</span></div><p>${escapeHTML(task.description||'')}${progress}</p><div class="cardActions">${task.link?'<button class="miniBtn openTask">Open</button>':''}<button class="miniBtn claimTask">Claim</button><span class="price">${escapeHTML(task.advertiser||'System')}</span></div></div>`; el.querySelector('.openTask')?.addEventListener('click',()=>openTask(task)); el.querySelector('.claimTask').addEventListener('click',()=>claimTask(task)); list.appendChild(el); }); }
+function renderLeaderboard(){ const list=$('leaderboardList'); list.innerHTML=''; const rank=data.myRank?.rank; $('myRankHero').textContent=rank?'#'+rank:'#?'; $('myRankDesc').textContent=rank?`${data.myRank.total} miner ichida. Score: ${fmt(data.myRank.score)}`:'Hali reytingda emassiz'; (data.leaderboard||[]).slice(0,30).forEach((row,i)=>{ const me=row.telegramId===user.telegramId; const el=document.createElement('div'); el.className='leaderRow '+(me?'me':''); el.innerHTML=`<div class="leaderRank">${i+1}</div><div class="leaderName"><b>${escapeHTML(row.firstName||'Miner')}</b><span>${escapeHTML(row.league)} · Lv ${row.level} · ${fmt(row.taps)} taps</span></div><div class="leaderScore">${fmt(row.totalEarned)}</div>`; list.appendChild(el); }); if(!list.innerHTML) list.innerHTML='<div class="leaderRow"><div class="leaderRank">1</div><div class="leaderName"><b>You</b><span>Start mining</span></div><div class="leaderScore">0</div></div>'; }
+function renderGlobalStats(){ const s=data.stats||{}; const stats=[['Start bosishlar',s.totalStartPresses],['Users',s.totalUsers],['Jami click',s.totalClicks],['Barcha balans',s.totalBalance],['Jami mined',s.totalEarned],['Task claims',s.totalTaskClaims],['Shop buys',s.totalShopPurchases],['Exchange req.',s.totalExchangeRequests]]; $('globalStats').innerHTML=stats.map(([k,v])=>`<div class="gstat"><small>${k}</small><b>${fmt(v)}</b></div>`).join(''); }
+function renderShop(){ const list=$('shopList'); list.innerHTML=''; (data.shopItems||[]).forEach(item=>{ const can=state.balance>=Number(item.cost||0); const el=document.createElement('button'); el.className='card '+(can?'':'disabled'); el.innerHTML=`<div class="cardIcon ${item.type==='skin'?'pink':item.type==='miner'?'green':'gold'}">${icon(item.icon||'box')}</div><div class="cardBody"><div class="cardTop"><h3>${escapeHTML(item.title)}</h3><span class="badge">${escapeHTML(item.type)}</span></div><p>${escapeHTML(item.description||'')}</p><div class="cardActions"><span class="price">${icon('coins')} ${fmt(item.cost)}</span><span class="miniBtn">Buy</span></div></div>`; el.onclick=()=>buyShop(item); list.appendChild(el); }); }
+function renderExchange(){ const list=$('exchangeList'); list.innerHTML=''; (data.exchangeItems||[]).forEach(item=>{ const el=document.createElement('button'); el.className='card disabled'; el.innerHTML=`<div class="cardIcon pink">${icon('gamepad')}</div><div class="cardBody"><div class="cardTop"><h3>${escapeHTML(item.game)} · ${escapeHTML(item.title)}</h3><span class="badge">${escapeHTML(item.status||'soon')}</span></div><p>${escapeHTML(item.note||'Tez orada')} Player ID kiritib request qoldirish mumkin.</p><div class="cardActions"><span class="price">${icon('coins')} ${fmt(item.cost)}</span><span class="miniBtn">Request</span></div></div>`; el.onclick=()=>exchangeRequest(item); list.appendChild(el); }); }
 
-function setupTelegram() {
-  try {
-    tg?.ready?.();
-    tg?.expand?.();
-    tg?.setHeaderColor?.('#070711');
-    tg?.setBackgroundColor?.('#070711');
-    tg?.disableVerticalSwipes?.();
-  } catch (_) {}
-}
+async function refresh(){ const res=await api('/api/me'); if(res.ok){setData(res);renderAll();} }
+async function mine(e){ if(!state||state.energy<energyCost()){toast('Energy kam. Biroz kuting ⚡');notify('error');return;} haptic(); spawnFx(e,tapReward()); const res=await api('/api/tap',{method:'POST',body:'{}'}); if(!res.ok){toast(res.error||'Tap error'); if(res.user)setData(res); renderAll(); return;} setData(res); if(res.critical) toast('CRITICAL TAP x3 🔥'); if(res.leveledUp){confetti(22);modal('Level Up!','Level oshdi. Energy capacity ham oshdi.','sparkles');} renderAll(); }
+function spawnFx(e,reward){ const zone=$('mineZone'), r=zone.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top; const p=document.createElement('div'); p.className='floatPlus'; p.textContent='+'+fmt(reward); p.style.left=x+'px'; p.style.top=y+'px'; zone.appendChild(p); setTimeout(()=>p.remove(),900); const rr=document.createElement('div'); rr.className='ripple'; rr.style.left=x+'px'; rr.style.top=y+'px'; zone.appendChild(rr); setTimeout(()=>rr.remove(),700); }
+async function buyUpgrade(item){ const res=await api('/api/upgrade',{method:'POST',body:JSON.stringify({id:item.id})}); if(!res.ok){toast(res.error||'Upgrade error'); if(res.user)setData(res); renderAll(); return;} setData(res); confetti(8); toast(item.title+' upgraded 🚀'); renderAll(); }
+async function claimDaily(){ const res=await api('/api/daily',{method:'POST',body:'{}'}); if(!res.ok){toast(res.error||'Daily error'); if(res.user)setData(res); renderAll(); return;} setData(res); confetti(20); toast('Daily reward: +'+fmt(res.reward)); renderAll(); }
+async function openTask(task){ await api('/api/task/visit',{method:'POST',body:JSON.stringify({id:task.id})}); if(task.link){ try{ if(tg&&task.link.includes('t.me/')) tg.openTelegramLink(task.link); else if(tg) tg.openLink(task.link); else window.open(task.link,'_blank'); }catch{ window.open(task.link,'_blank'); } } toast('Task ochildi. Keyin Claim bosing.'); refresh(); }
+async function claimTask(task){ const res=await api('/api/task',{method:'POST',body:JSON.stringify({id:task.id})}); if(!res.ok){toast(res.error||'Task tayyor emas'); if(res.user)setData(res); renderAll(); return;} setData(res); confetti(16); toast('Task reward: +'+fmt(res.reward)); renderAll(); }
+async function buyShop(item){ const res=await api('/api/shop/buy',{method:'POST',body:JSON.stringify({id:item.id})}); if(!res.ok){toast(res.error||'Shop error'); if(res.user)setData(res); renderAll(); return;} setData(res); confetti(10); toast(item.title+' sotib olindi'); renderAll(); }
+async function exchangeRequest(item){ const playerId=prompt(`${item.game} ${item.title} uchun Player ID kiriting:`); if(playerId===null)return; const res=await api('/api/exchange',{method:'POST',body:JSON.stringify({id:item.id,playerId})}); if(!res.ok){toast(res.error||'Exchange error'); return;} setData(res); modal('Tez orada',res.message||'Request saqlandi. Coin yechilmadi.','gamepad'); renderAll(); }
+async function copyInvite(){ const val=$('inviteInput').value; try{ await navigator.clipboard.writeText(val); }catch{ $('inviteInput').select(); document.execCommand('copy'); } toast('Referral link copied 👥'); }
+async function sendCoins(){ const to=$('sendTo').value.trim(), amount=Number($('sendAmount').value||0); const res=await api('/api/transfer',{method:'POST',body:JSON.stringify({to,amount})}); if(!res.ok){toast(res.error||'Transfer error'); if(res.user)setData(res); renderAll(); return;} setData(res); modal('Coins sent','Transfer muvaffaqiyatli. Fee: '+fmt(res.transfer.fee),'wallet'); renderAll(); }
+async function withdraw(){ const account=$('withdrawAccount').value.trim(), amount=Number($('withdrawAmount').value||0); const res=await api('/api/withdraw',{method:'POST',body:JSON.stringify({account,amount,method:'manual'})}); if(!res.ok){toast(res.error||'Withdraw error'); return;} setData(res); modal('Withdraw status',res.message||'Tez orada.','wallet'); renderAll(); }
+async function sellOffer(){ const amount=Number($('sellAmount').value||0), price=$('sellPrice').value.trim(); const res=await api('/api/sell',{method:'POST',body:JSON.stringify({amount,price})}); if(!res.ok){toast(res.error||'Sell offer error'); return;} setData(res); modal('Sell offer',res.message||'Tez orada.','coins'); renderAll(); }
+async function loadLeaderboard(){ const res=await api('/api/leaderboard'); if(res.ok){ data.leaderboard=res.leaderboard; data.myRank=res.myRank; renderLeaderboard(); renderHeader(); toast('Leaderboard refreshed'); } }
+function switchPage(page){ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); $('page-'+page).classList.add('active'); document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page)); if(page==='rank') loadLeaderboard(); haptic(); scrollTo({top:0,behavior:'smooth'}); }
+function confetti(count=16){ const colors=['#67e8f9','#facc15','#f472b6','#86efac','#c084fc','#fb923c']; for(let i=0;i<count;i++){ const p=document.createElement('div'); p.className='confetti'; p.style.left=Math.random()*100+'vw'; p.style.background=colors[Math.floor(Math.random()*colors.length)]; p.style.animationDelay=Math.random()*.3+'s'; document.body.appendChild(p); setTimeout(()=>p.remove(),1800); } }
+function startTimers(){ clearInterval(passiveTimer); passiveTimer=setInterval(()=>{ if(!state)return; state.balance+=Number(state.miners||0); state.totalEarned+=Number(state.miners||0); state.energy=Math.min(state.maxEnergy,state.energy+Number(state.recharge||4)); renderHeader(); renderBars(); },1000); clearInterval(syncTimer); syncTimer=setInterval(refresh,20000); }
+function bindEvents(){ $('coinButton').addEventListener('click',mine); $('dailyButton').addEventListener('click',claimDaily); $('copyInviteBtn').addEventListener('click',copyInvite); $('refreshLeaderboardBtn').addEventListener('click',loadLeaderboard); $('sendBtn').addEventListener('click',sendCoins); $('withdrawBtn').addEventListener('click',withdraw); $('sellBtn').addEventListener('click',sellOffer); $('modalClose').addEventListener('click',()=>$('modal').classList.remove('show')); $('modal').addEventListener('click',e=>{if(e.target.id==='modal')$('modal').classList.remove('show')}); document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>switchPage(btn.dataset.page))); document.querySelectorAll('[data-page-jump]').forEach(btn=>btn.addEventListener('click',()=>switchPage(btn.dataset.pageJump))); }
 
-function initData() {
-  return tg?.initData || '';
-}
-
-function startParam() {
-  return tg?.initDataUnsafe?.start_param || '';
-}
-
-async function api(path, options = {}) {
-  const response = await fetch(path, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Telegram-Init-Data': initData(),
-      'X-Telegram-Start-Param': startParam(),
-      ...(options.headers || {})
-    }
-  });
-  const data = await response.json().catch(() => ({ ok: false, error: 'Invalid server response' }));
-  if (!response.ok && !data.error) data.error = 'Server error';
-  return data;
-}
-
-async function boot() {
-  setupTelegram();
-  hydrateIcons();
-  bindEvents();
-
-  try {
-    const data = await api('/api/me');
-    if (!data.ok) throw new Error(data.error || 'Could not load profile');
-    setUser(data.user);
-    await loadLeaderboard();
-    renderAll();
-    startPassiveTicker();
-  } catch (error) {
-    toast(error.message || 'Server bilan ulanishda xatolik', 'zap-off');
-  } finally {
-    setTimeout(() => $('loadingScreen')?.classList.add('hide'), 350);
-  }
-}
-
-function setUser(nextUser) {
-  user = nextUser;
-  state = nextUser.state;
-  upgradeLevels = nextUser.upgrades;
-}
-
-function formatNumber(value) {
-  const number = Number(value || 0);
-  if (number >= 1000000000) return (number / 1000000000).toFixed(2) + 'B';
-  if (number >= 1000000) return (number / 1000000).toFixed(2) + 'M';
-  if (number >= 1000) return (number / 1000).toFixed(1) + 'K';
-  return Math.floor(number).toLocaleString('en-US');
-}
-
-function rawNumber(value) {
-  return Math.floor(Number(value || 0)).toLocaleString('en-US');
-}
-
-function tapReward() {
-  return Math.max(1, Math.round(Number(state.tapPower || 1) * Number(state.multiplier || 1)));
-}
-
-function upgradeCost(item) {
-  return Math.round(item.baseCost * Math.pow(1.55, Number(upgradeLevels[item.id] || 0)));
-}
-
-function haptic(type = 'light') {
-  try { tg?.HapticFeedback?.impactOccurred?.(type); } catch (_) {}
-}
-
-function notify(type = 'success') {
-  try { tg?.HapticFeedback?.notificationOccurred?.(type); } catch (_) {}
-}
-
-function toast(message, toastIcon = 'sparkles') {
-  const el = $('toast');
-  el.innerHTML = `${icon(toastIcon)}<span>${message}</span>`;
-  el.classList.add('show');
-  clearTimeout(el._timer);
-  el._timer = setTimeout(() => el.classList.remove('show'), 1800);
-}
-
-function renderAll() {
-  if (!state || !upgradeLevels) return;
-  renderHeader();
-  renderProgress();
-  renderStats();
-  renderUpgrades();
-  renderTasks();
-  renderRanks();
-  renderDaily();
-  renderLeaderboard();
-}
-
-function renderHeader() {
-  $('balanceText').textContent = formatNumber(state.balance);
-  $('leagueText').textContent = state.league;
-  $('tapRewardText').textContent = '+' + tapReward();
-  $('passiveText').textContent = '+' + formatNumber(state.miners);
-  $('rankHeroLeague').textContent = state.league;
-  $('totalMinedText').textContent = rawNumber(state.totalEarned);
-
-  const tgUser = tg?.initDataUnsafe?.user;
-  const firstName = user?.firstName || tgUser?.first_name || 'Miner';
-  $('helloText').textContent = 'Hi, ' + firstName;
-
-  const botUsername = tg?.initDataUnsafe?.receiver?.username || 'your_bot';
-  const ref = state.referralCode || '000001';
-  $('inviteInput').value = `https://t.me/${botUsername}?startapp=ref_${ref}`;
-}
-
-function renderProgress() {
-  const energyPercent = Math.min(100, Math.max(0, (state.energy / state.maxEnergy) * 100));
-  const xpPercent = Math.min(100, Math.max(0, (state.xp / state.xpToNext) * 100));
-
-  $('energyText').textContent = `${Math.floor(state.energy)} / ${Math.floor(state.maxEnergy)}`;
-  $('energyBar').style.width = energyPercent + '%';
-  $('levelText').innerHTML = `${icon('star')} Level ${state.level} XP`;
-  $('xpText').textContent = `${Math.floor(state.xp)} / ${Math.floor(state.xpToNext)}`;
-  $('xpBar').style.width = xpPercent + '%';
-  $('coinButton').classList.toggle('disabled', state.energy <= 0);
-}
-
-function renderStats() {
-  $('multiStat').textContent = Number(state.multiplier).toFixed(2) + 'x';
-  $('maxEnergyStat').textContent = formatNumber(state.maxEnergy);
-  $('streakStat').textContent = state.streak + 'd';
-}
-
-function renderDaily() {
-  const today = new Date().toISOString().slice(0, 10);
-  const claimed = state.claimedDailyDate === today;
-  const btn = $('dailyButton');
-  btn.disabled = claimed;
-  btn.innerHTML = claimed ? `${icon('badge-check')} Already Claimed Today` : `${icon('gift')} Claim Daily Reward`;
-}
-
-function renderUpgrades() {
-  const list = $('upgradeList');
-  list.innerHTML = '';
-
-  upgrades.forEach((item) => {
-    const cost = upgradeCost(item);
-    const canBuy = state.balance >= cost;
-    const button = document.createElement('button');
-    button.className = 'upgrade-card' + (canBuy ? '' : ' locked');
-    button.innerHTML = `
-      <div class="up-icon ${item.className}">${icon(item.icon)}</div>
-      <div class="item-body">
-        <div class="item-top">
-          <h3 class="item-title">${item.title}</h3>
-          <span class="level-badge">Lv ${upgradeLevels[item.id] || 0}</span>
-        </div>
-        <p class="item-desc">${item.description}</p>
-        <div class="item-bottom">
-          <span class="price">${icon('coins')} ${formatNumber(cost)}</span>
-          <span class="action-word">Upgrade ${icon('chevron-right')}</span>
-        </div>
-      </div>`;
-    button.addEventListener('click', () => buyUpgrade(item));
-    list.appendChild(button);
-  });
-}
-
-function renderTasks() {
-  const list = $('taskList');
-  list.innerHTML = '';
-
-  tasks.forEach((task) => {
-    const done = state.completedTasks.includes(task.id);
-    const card = document.createElement('button');
-    card.className = 'task-card';
-    card.innerHTML = `
-      <div class="task-icon grad-task">${icon(task.icon)}</div>
-      <div class="item-body">
-        <div class="item-top">
-          <h3 class="item-title">${task.title}</h3>
-          <span class="status-badge ${done ? 'done' : ''}">${done ? 'Done' : 'Go'}</span>
-        </div>
-        <p class="item-desc">Reward: +${formatNumber(task.reward)} coins</p>
-      </div>`;
-    card.addEventListener('click', () => claimTask(task));
-    list.appendChild(card);
-  });
-}
-
-function renderRanks() {
-  const list = $('rankList');
-  list.innerHTML = '';
-
-  ranks.forEach((rank) => {
-    const active = state.league === rank.name;
-    const card = document.createElement('div');
-    card.className = 'rank-card';
-    card.innerHTML = `
-      <div class="rank-icon ${rank.className}">${icon(rank.icon)}</div>
-      <div class="item-body">
-        <div class="item-top">
-          <h3 class="item-title">${rank.name}</h3>
-          ${active ? '<span class="status-badge done">Active</span>' : ''}
-        </div>
-        <p class="item-desc">Requirement: ${formatNumber(rank.need)} total mined coins</p>
-      </div>`;
-    list.appendChild(card);
-  });
-}
-
-function renderLeaderboard() {
-  const list = $('leaderboardList');
-  list.innerHTML = '';
-  if (!leaderboard.length) {
-    list.innerHTML = '<div class="leaderboard-row"><div class="leaderboard-rank">1</div><div class="leaderboard-name"><b>You</b><span>Start mining to appear here</span></div><div class="leaderboard-score">0</div></div>';
-    return;
-  }
-
-  leaderboard.slice(0, 7).forEach((row, index) => {
-    const item = document.createElement('div');
-    item.className = 'leaderboard-row';
-    item.innerHTML = `
-      <div class="leaderboard-rank">${index + 1}</div>
-      <div class="leaderboard-name"><b>${escapeHTML(row.firstName || 'Miner')}</b><span>${escapeHTML(row.league)} · Lv ${Number(row.level || 1)}</span></div>
-      <div class="leaderboard-score">${formatNumber(row.totalEarned)}</div>`;
-    list.appendChild(item);
-  });
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
-}
-
-async function mine(event) {
-  if (!state || state.energy <= 0) {
-    notify('error');
-    toast('Energy tugadi. Biroz kuting', 'zap-off');
-    return;
-  }
-
-  haptic('light');
-  spawnFloatingPlus(event, tapReward());
-  spawnRipple(event);
-
-  const data = await api('/api/tap', { method: 'POST', body: '{}' });
-  if (!data.ok) {
-    notify('error');
-    toast(data.error || 'Tap error', 'zap-off');
-    if (data.user) setUser(data.user);
-    renderAll();
-    return;
-  }
-
-  setUser(data.user);
-  if (data.leveledUp) {
-    notify('success');
-    confetti(20);
-    openLevelModal();
-  }
-  renderAll();
-}
-
-function relativeTapPosition(event) {
-  const zone = $('mineZone');
-  const rect = zone.getBoundingClientRect();
-  return { zone, x: event.clientX - rect.left, y: event.clientY - rect.top };
-}
-
-function spawnFloatingPlus(event, reward) {
-  const { zone, x, y } = relativeTapPosition(event);
-  const plus = document.createElement('div');
-  plus.className = 'floating-plus';
-  plus.textContent = '+' + reward;
-  plus.style.left = x + 'px';
-  plus.style.top = y + 'px';
-  zone.appendChild(plus);
-  setTimeout(() => plus.remove(), 900);
-}
-
-function spawnRipple(event) {
-  const { zone, x, y } = relativeTapPosition(event);
-  const ripple = document.createElement('div');
-  ripple.className = 'tap-ripple';
-  ripple.style.left = x + 'px';
-  ripple.style.top = y + 'px';
-  zone.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 700);
-}
-
-async function buyUpgrade(item) {
-  if (!state) return;
-  const cost = upgradeCost(item);
-  if (state.balance < cost) {
-    notify('error');
-    toast('Coin yetarli emas', 'coins');
-    return;
-  }
-
-  const data = await api('/api/upgrade', { method: 'POST', body: JSON.stringify({ id: item.id }) });
-  if (!data.ok) {
-    notify('error');
-    toast(data.error || 'Upgrade error', item.icon);
-    if (data.user) setUser(data.user);
-    renderAll();
-    return;
-  }
-
-  setUser(data.user);
-  notify('success');
-  toast(`${item.title} upgrade qilindi`, item.icon);
-  confetti(8);
-  renderAll();
-}
-
-async function claimDaily() {
-  const data = await api('/api/daily', { method: 'POST', body: '{}' });
-  if (!data.ok) {
-    notify('error');
-    toast(data.error || 'Daily reward error', 'gift');
-    if (data.user) setUser(data.user);
-    renderAll();
-    return;
-  }
-  setUser(data.user);
-  notify('success');
-  confetti(24);
-  toast('Daily reward olindi: +2,500', 'gift');
-  renderAll();
-}
-
-async function claimTask(task) {
-  const data = await api('/api/task', { method: 'POST', body: JSON.stringify({ id: task.id }) });
-  if (!data.ok) {
-    toast(data.error || 'Task hali tayyor emas', task.icon);
-    if (data.user) setUser(data.user);
-    renderAll();
-    return;
-  }
-  setUser(data.user);
-  notify('success');
-  confetti(16);
-  toast(`Task reward: +${formatNumber(task.reward)} coins`, task.icon);
-  renderAll();
-  loadLeaderboard();
-}
-
-async function copyInvite() {
-  const input = $('inviteInput');
-  try {
-    await navigator.clipboard.writeText(input.value);
-    notify('success');
-    toast('Invite link copied', 'copy-check');
-  } catch (error) {
-    input.select();
-    document.execCommand('copy');
-    toast('Invite link copied', 'copy-check');
-  }
-}
-
-async function loadLeaderboard() {
-  const data = await api('/api/leaderboard');
-  if (data.ok && Array.isArray(data.leaderboard)) leaderboard = data.leaderboard;
-  renderLeaderboard();
-}
-
-function switchPage(page) {
-  document.querySelectorAll('.page').forEach((el) => el.classList.remove('active'));
-  $('page-' + page).classList.add('active');
-
-  document.querySelectorAll('.nav-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.page === page);
-  });
-
-  if (page === 'rank') loadLeaderboard();
-  haptic('light');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function openLevelModal() {
-  $('levelModal').classList.add('show');
-}
-
-function closeLevelModal() {
-  $('levelModal').classList.remove('show');
-}
-
-function confetti(count = 16) {
-  const colors = ['#67e8f9', '#facc15', '#f472b6', '#86efac', '#c084fc', '#fb923c'];
-  for (let i = 0; i < count; i += 1) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti';
-    piece.style.left = Math.random() * 100 + 'vw';
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.animationDelay = Math.random() * 0.3 + 's';
-    piece.style.transform = `rotate(${Math.random() * 180}deg)`;
-    document.body.appendChild(piece);
-    setTimeout(() => piece.remove(), 1800);
-  }
-}
-
-function startPassiveTicker() {
-  clearInterval(passiveTimer);
-  passiveTimer = setInterval(() => {
-    if (!state) return;
-    state.balance += Number(state.miners || 0);
-    state.totalEarned += Number(state.miners || 0);
-    state.energy = Math.min(state.maxEnergy, state.energy + 4);
-    renderHeader();
-    renderProgress();
-  }, 1000);
-
-  clearInterval(syncTimer);
-  syncTimer = setInterval(async () => {
-    const data = await api('/api/me');
-    if (data.ok) {
-      setUser(data.user);
-      renderAll();
-    }
-  }, 15000);
-}
-
-function bindEvents() {
-  $('coinButton').addEventListener('click', mine);
-  $('dailyButton').addEventListener('click', claimDaily);
-  $('copyInviteBtn').addEventListener('click', copyInvite);
-  $('refreshLeaderboardBtn').addEventListener('click', loadLeaderboard);
-  $('closeModalBtn').addEventListener('click', closeLevelModal);
-  $('levelModal').addEventListener('click', (event) => {
-    if (event.target.id === 'levelModal') closeLevelModal();
-  });
-  $('modalBoostBtn').addEventListener('click', () => {
-    closeLevelModal();
-    switchPage('boost');
-  });
-
-  document.querySelectorAll('.nav-btn').forEach((btn) => {
-    btn.addEventListener('click', () => switchPage(btn.dataset.page));
-  });
-  document.querySelectorAll('[data-page-jump]').forEach((btn) => {
-    btn.addEventListener('click', () => switchPage(btn.dataset.pageJump));
-  });
-}
-
-document.addEventListener('DOMContentLoaded', boot);
+document.addEventListener('DOMContentLoaded',boot);

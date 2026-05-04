@@ -1,25 +1,13 @@
 {
-  "name": "crypto-clicker-miniapp",
-  "version": "1.0.0",
-  "description": "Telegram Mini App tap-to-earn crypto clicker game with Node.js bot, API and premium mobile UI.",
+  "name": "crypto-clicker-miniapp-pro",
+  "version": "2.0.0",
+  "description": "Telegram Mini App crypto clicker game with referrals, tasks, shop, exchange requests, wallet and admin panel.",
   "main": "server.js",
-  "type": "commonjs",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "scripts": {
     "start": "node server.js",
-    "dev": "NODE_ENV=development node server.js",
-    "check": "node --check server.js && node --check public/assets/app.js"
+    "dev": "NODE_ENV=development DEV_MODE=true node server.js",
+    "check": "node --check server.js && node --check public/assets/app.js && node --check public/assets/admin.js"
   },
-  "keywords": [
-    "telegram",
-    "miniapp",
-    "bot",
-    "nodejs",
-    "tap-to-earn",
-    "clicker"
-  ],
-  "author": "",
+  "keywords": ["telegram", "mini-app", "clicker", "nodejs", "bot"],
   "license": "MIT"
 }
