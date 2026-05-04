@@ -243,32 +243,32 @@ function deepMerge(base, value) {
 
 function defaultTasks() {
   return [
-    { id: 'join_main_channel', title: 'Telegram kanalga obuna bo‘ling', description: 'Asosiy kanalga qo‘shiling va bonus oling.', reward: 600, type: 'subscribe', link: 'https://t.me/telegram', chatId: '', advertiser: 'Demo Advertiser', active: true, sort: 10 },
-    { id: 'join_game_group', title: 'Gaming guruhga qo‘shiling', description: 'Guruhga qo‘shiling, claim bosing.', reward: 800, type: 'subscribe', link: 'https://t.me/telegram', chatId: '', advertiser: 'Demo Advertiser', active: true, sort: 20 },
-    { id: 'invite_friend', title: '1 ta do‘st taklif qiling', description: 'Referral orqali kamida 1 do‘st kirsa claim qilinadi.', reward: 1200, type: 'referral', link: '', chatId: '', advertiser: 'System', active: true, sort: 30 },
-    { id: 'three_day', title: '3 kunlik streak qiling', description: '3 kun daily reward olganingizdan keyin ochiladi.', reward: 900, type: 'streak', link: '', chatId: '', advertiser: 'System', active: true, sort: 40 },
-    { id: 'silver', title: 'Silver League ga chiqing', description: '20K total earned yig‘ing.', reward: 3000, type: 'league', link: '', chatId: '', advertiser: 'System', active: true, sort: 50 },
-    { id: 'tap_1000', title: '1000 marta click qiling', description: 'Jami 1000 tap qilganingizdan keyin reward.', reward: 2500, type: 'tap', target: 1000, link: '', chatId: '', advertiser: 'System', active: true, sort: 60 }
+    { id: 'join_main_channel', title: 'Join the Telegram channel', titleRu: 'Подпишитесь на Telegram-канал', description: 'Join the advertiser channel and press Check. Subscription is verified automatically.', descriptionRu: 'Подпишитесь на канал рекламодателя и нажмите Проверить. Подписка проверяется автоматически.', reward: 600, type: 'subscribe', link: 'https://t.me/telegram', chatId: '', advertiser: 'Demo Advertiser', active: true, sort: 10 },
+    { id: 'join_game_group', title: 'Join the gaming group', titleRu: 'Вступите в игровой чат', description: 'Join the group, return to the app and press Check.', descriptionRu: 'Вступите в чат, вернитесь в приложение и нажмите Проверить.', reward: 800, type: 'subscribe', link: 'https://t.me/telegram', chatId: '', advertiser: 'Demo Advertiser', active: true, sort: 20 },
+    { id: 'invite_friend', title: 'Invite 1 friend', titleRu: 'Пригласите 1 друга', description: 'Claim after at least one friend joins with your referral link.', descriptionRu: 'Заберите бонус, когда хотя бы один друг зайдёт по вашей ссылке.', reward: 1200, type: 'referral', link: '', chatId: '', advertiser: 'System', active: true, sort: 30 },
+    { id: 'three_day', title: 'Reach a 3-day streak', titleRu: 'Серия 3 дня', description: 'Unlocked after claiming daily rewards for 3 days.', descriptionRu: 'Откроется после ежедневного бонуса 3 дня подряд.', reward: 900, type: 'streak', link: '', chatId: '', advertiser: 'System', active: true, sort: 40 },
+    { id: 'silver', title: 'Reach Silver League', titleRu: 'Достигните Серебряной лиги', description: 'Earn 30K total coins to unlock this task.', descriptionRu: 'Заработайте всего 30K монет, чтобы открыть задание.', reward: 3000, type: 'league', link: '', chatId: '', advertiser: 'System', active: true, sort: 50 },
+    { id: 'tap_1000', title: 'Make 1000 taps', titleRu: 'Сделайте 1000 тапов', description: 'Reward unlocks after your total tap counter reaches 1000.', descriptionRu: 'Награда откроется, когда счётчик тапов достигнет 1000.', reward: 2500, type: 'tap', target: 1000, link: '', chatId: '', advertiser: 'System', active: true, sort: 60 }
   ];
 }
 
 function defaultShopItems() {
   return [
-    { id: 'energy_pack', title: 'Energy Pack', description: '+450 energy instant', cost: 700, type: 'energy', value: 450, active: true, icon: 'battery' },
-    { id: 'miner_crate', title: 'Miner Crate', description: '+1 auto miner', cost: 4800, type: 'miner', value: 1, active: true, icon: 'bot' },
-    { id: 'tap_booster', title: 'Tap Booster', description: '+3 tap power', cost: 3500, type: 'tap_power', value: 3, active: true, icon: 'pickaxe' },
-    { id: 'multiplier_chip', title: 'Multiplier Chip', description: '+0.12x multiplier', cost: 6500, type: 'multiplier', value: 0.12, active: true, icon: 'flame' },
-    { id: 'neon_skin', title: 'Neon Coin Skin', description: 'Cosmetic inventory item', cost: 2500, type: 'skin', value: 'neon_coin', active: true, icon: 'gem' }
+    { id: 'energy_pack', title: 'Energy Pack', titleRu: 'Пак энергии', description: '+450 energy instantly', descriptionRu: '+450 энергии сразу', cost: 700, type: 'energy', value: 450, active: true, icon: 'battery' },
+    { id: 'miner_crate', title: 'Miner Crate', titleRu: 'Ящик майнера', description: '+1 auto miner', descriptionRu: '+1 авто-майнер', cost: 4800, type: 'miner', value: 1, active: true, icon: 'bot' },
+    { id: 'tap_booster', title: 'Tap Booster', titleRu: 'Бустер тапа', description: '+3 tap power', descriptionRu: '+3 к силе тапа', cost: 3500, type: 'tap_power', value: 3, active: true, icon: 'pickaxe' },
+    { id: 'multiplier_chip', title: 'Multiplier Chip', titleRu: 'Чип множителя', description: '+0.12x multiplier', descriptionRu: '+0.12x к множителю', cost: 6500, type: 'multiplier', value: 0.12, active: true, icon: 'flame' },
+    { id: 'neon_skin', title: 'Neon Coin Skin', titleRu: 'Неоновый скин монеты', description: 'Cosmetic inventory item', descriptionRu: 'Косметический предмет', cost: 2500, type: 'skin', value: 'neon_coin', active: true, icon: 'gem' }
   ];
 }
 
 function defaultExchangeItems() {
   return [
-    { id: 'pubg_60_uc', game: 'PUBG Mobile', title: '60 UC', cost: 30000, status: 'soon', active: true, note: 'Tez orada avtomatik berish qo‘shiladi.' },
-    { id: 'pubg_325_uc', game: 'PUBG Mobile', title: '325 UC', cost: 145000, status: 'soon', active: true, note: 'Tez orada.' },
-    { id: 'ff_100_diamond', game: 'Free Fire', title: '100 Diamond', cost: 45000, status: 'soon', active: true, note: 'Tez orada.' },
-    { id: 'ff_310_diamond', game: 'Free Fire', title: '310 Diamond', cost: 125000, status: 'soon', active: true, note: 'Tez orada.' },
-    { id: 'roblox_80_robux', game: 'Roblox', title: '80 Robux', cost: 55000, status: 'soon', active: true, note: 'Tez orada.' }
+    { id: 'pubg_60_uc', game: 'PUBG Mobile', title: '60 UC', titleRu: '60 UC', cost: 30000, status: 'soon', active: true, note: 'Coming soon. Admin receives your request; coins are not deducted yet.', noteRu: 'Скоро. Админ получает заявку; монеты пока не списываются.' },
+    { id: 'pubg_325_uc', game: 'PUBG Mobile', title: '325 UC', titleRu: '325 UC', cost: 145000, status: 'soon', active: true, note: 'Coming soon.', noteRu: 'Скоро.' },
+    { id: 'ff_100_diamond', game: 'Free Fire', title: '100 Diamonds', titleRu: '100 алмазов', cost: 45000, status: 'soon', active: true, note: 'Coming soon.', noteRu: 'Скоро.' },
+    { id: 'ff_310_diamond', game: 'Free Fire', title: '310 Diamonds', titleRu: '310 алмазов', cost: 125000, status: 'soon', active: true, note: 'Coming soon.', noteRu: 'Скоро.' },
+    { id: 'roblox_80_robux', game: 'Roblox', title: '80 Robux', titleRu: '80 Robux', cost: 55000, status: 'soon', active: true, note: 'Coming soon.', noteRu: 'Скоро.' }
   ];
 }
 
@@ -498,7 +498,7 @@ function publicUser(profile) {
 }
 
 function publicStatus() {
-  return { ok: true, botConfigured: Boolean(BOT_TOKEN && !BOT_TOKEN.includes('EXAMPLE')), webappConfigured: Boolean(WEBAPP_URL), webappUrl: WEBAPP_URL, environment: NODE_ENV, botUsername };
+  return { ok: true, botConfigured: Boolean(BOT_TOKEN && !BOT_TOKEN.includes('EXAMPLE')), webappConfigured: Boolean(WEBAPP_URL), webappUrl: WEBAPP_URL, environment: NODE_ENV, botUsername, upgrades: Object.values(upgrades), settings: store.settings };
 }
 
 function publicStats() {
@@ -841,6 +841,7 @@ async function handleAdminApi(req, res, url) {
   let result;
   if (url.pathname === '/api/admin/task/save') result = adminSaveTask(body);
   else if (url.pathname === '/api/admin/task/delete') result = adminDeleteById('tasks', body.id);
+  else if (url.pathname === '/api/admin/task/test') result = await adminTestTaskChat(body);
   else if (url.pathname === '/api/admin/shop/save') result = adminSaveShop(body);
   else if (url.pathname === '/api/admin/shop/delete') result = adminDeleteById('shopItems', body.id);
   else if (url.pathname === '/api/admin/exchange/save') result = adminSaveExchange(body);
@@ -867,17 +868,17 @@ function adminOverview() {
 function publicAdminUser(profile) { return { telegramId: profile.telegramId, firstName: profile.firstName, username: profile.username, balance: Math.floor(profile.state.balance||0), totalEarned: Math.floor(profile.state.totalEarned||0), level: profile.state.level, league: profile.state.league, referrals: (profile.meta.referrals||[]).length, taps: profile.state.stats?.taps||0, createdAt: profile.createdAt }; }
 function adminSaveTask(body) {
   const id = sanitizeId(body.id || body.title || 'task');
-  const item = { id, title: String(body.title || 'Task').slice(0,80), description: String(body.description || '').slice(0,180), reward: Math.max(0, Math.floor(Number(body.reward || 0))), type: String(body.type || 'subscribe'), link: String(body.link || '').slice(0,300), chatId: String(body.chatId || '').slice(0,80), advertiser: String(body.advertiser || 'Admin').slice(0,80), target: Math.floor(Number(body.target || 0)), active: body.active !== false && body.active !== 'false', sort: Math.floor(Number(body.sort || 100)) };
+  const item = { id, title: String(body.title || 'Task').slice(0,80), titleRu: String(body.titleRu || '').slice(0,80), description: String(body.description || '').slice(0,220), descriptionRu: String(body.descriptionRu || '').slice(0,220), reward: Math.max(0, Math.floor(Number(body.reward || 0))), type: String(body.type || 'subscribe'), link: String(body.link || '').slice(0,300), chatId: String(body.chatId || '').slice(0,80), advertiser: String(body.advertiser || 'Admin').slice(0,80), target: Math.floor(Number(body.target || 0)), active: body.active !== false && body.active !== 'false', sort: Math.floor(Number(body.sort || 100)) };
   upsertArray(store.tasks, item); store.stats.adminSaves += 1; scheduleSave(); return { ok: true, item, overview: adminOverview() };
 }
 function adminSaveShop(body) {
   const id = sanitizeId(body.id || body.title || 'shop');
-  const item = { id, title: String(body.title || 'Shop item').slice(0,80), description: String(body.description || '').slice(0,180), cost: Math.max(0, Math.floor(Number(body.cost || 0))), type: String(body.type || 'energy'), value: isNaN(Number(body.value)) ? String(body.value || '') : Number(body.value), active: body.active !== false && body.active !== 'false', icon: String(body.icon || 'box').slice(0,40) };
+  const item = { id, title: String(body.title || 'Shop item').slice(0,80), titleRu: String(body.titleRu || '').slice(0,80), description: String(body.description || '').slice(0,220), descriptionRu: String(body.descriptionRu || '').slice(0,220), cost: Math.max(0, Math.floor(Number(body.cost || 0))), type: String(body.type || 'energy'), value: isNaN(Number(body.value)) ? String(body.value || '') : Number(body.value), active: body.active !== false && body.active !== 'false', icon: String(body.icon || 'box').slice(0,40) };
   upsertArray(store.shopItems, item); store.stats.adminSaves += 1; scheduleSave(); return { ok: true, item, overview: adminOverview() };
 }
 function adminSaveExchange(body) {
   const id = sanitizeId(body.id || `${body.game || 'game'}_${body.title || 'coin'}`);
-  const item = { id, game: String(body.game || 'Game').slice(0,80), title: String(body.title || 'Coins').slice(0,80), cost: Math.max(0, Math.floor(Number(body.cost || 0))), status: String(body.status || 'soon').slice(0,40), note: String(body.note || 'Tez orada').slice(0,180), active: body.active !== false && body.active !== 'false' };
+  const item = { id, game: String(body.game || 'Game').slice(0,80), title: String(body.title || 'Coins').slice(0,80), titleRu: String(body.titleRu || '').slice(0,80), cost: Math.max(0, Math.floor(Number(body.cost || 0))), status: String(body.status || 'soon').slice(0,40), note: String(body.note || 'Coming soon').slice(0,220), noteRu: String(body.noteRu || '').slice(0,220), active: body.active !== false && body.active !== 'false' };
   upsertArray(store.exchangeItems, item); store.stats.adminSaves += 1; scheduleSave(); return { ok: true, item, overview: adminOverview() };
 }
 function adminDeleteById(collection, id) {
@@ -907,6 +908,21 @@ function adminSaveSettings(body) {
     if (body[key] !== undefined) store.settings[key] = Number(body[key]);
   }
   store.stats.adminSaves += 1; scheduleSave(); return { ok: true, settings: store.settings, overview: adminOverview() };
+}
+
+async function adminTestTaskChat(body) {
+  const chatId = String(body.chatId || '').trim();
+  if (!chatId) return { ok: false, error: 'chatId is required. Use @channelusername or -100...' };
+  if (!BOT_TOKEN || BOT_TOKEN.includes('EXAMPLE')) return { ok: false, error: 'BOT_TOKEN is not configured.' };
+  const chat = await telegramApi('getChat', { chat_id: chatId });
+  if (!chat.ok) return { ok: false, error: chat.description || 'Telegram could not find this chat. Check chatId/link.' };
+  let botMember = null;
+  if (botUsername) {
+    const me = await telegramApi('getMe', {});
+    const botId = me.ok ? me.result.id : null;
+    if (botId) botMember = await telegramApi('getChatMember', { chat_id: chatId, user_id: botId });
+  }
+  return { ok: true, chat: chat.result, botMember: botMember && botMember.ok ? botMember.result : null };
 }
 function sanitizeId(value) { return String(value || 'item').toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '').slice(0,50) || uid('item'); }
 function upsertArray(arr, item) { const idx = arr.findIndex(x => x.id === item.id); if (idx === -1) arr.push(item); else arr[idx] = { ...arr[idx], ...item }; }
@@ -960,7 +976,7 @@ async function handleBotUpdate(update) {
     if (message.from && store.users[String(message.from.id)]) store.users[String(message.from.id)].meta.startPresses += 1;
     scheduleSave();
     const name = message.from?.first_name || 'Miner';
-    const caption = [`Salom, ${escapeText(name)}! 💎`, '', `🚀 <b>${escapeText(BOT_TITLE)}</b> — gamerlar uchun tap-to-earn Mini App.`, 'Coin yig‘ing, upgrade qiling, referral chaqiring, task bajaring va TOP reytingga chiqing.', '', 'Pastdagi tugma orqali o‘yinni oching.'].join('\n');
+    const caption = [`Hi, ${escapeText(name)}! / Привет, ${escapeText(name)}! 💎`, '', `🚀 <b>${escapeText(BOT_TITLE)}</b> — tap-to-earn Mini App for gamers.`, 'Mine coins, upgrade, invite friends, complete tasks and climb the TOP ranking.', '', 'RU: майните монеты, улучшайтесь, приглашайте друзей, выполняйте задания и поднимайтесь в рейтинге.', '', 'Open the game with the button below.'].join('\n');
     return sendBotMessage(message.chat.id, caption, openAppKeyboard(message.from));
   }
   if (text.startsWith('/stats')) return sendBotMessage(message.chat.id, botStatsText(), openAppKeyboard(message.from));

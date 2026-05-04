@@ -1,13 +1,19 @@
 {
   "name": "crypto-clicker-miniapp-pro",
-  "version": "2.0.0",
-  "description": "Telegram Mini App crypto clicker game with referrals, tasks, shop, exchange requests, wallet and admin panel.",
+  "version": "2.1.0",
+  "description": "Compact EN/RU Telegram Mini App clicker game with referrals, verified subscribe tasks, shop, leaderboard, wallet and admin panel.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "NODE_ENV=development DEV_MODE=true node server.js",
-    "check": "node --check server.js && node --check public/assets/app.js && node --check public/assets/admin.js"
+    "check": "node --check server.js"
   },
-  "keywords": ["telegram", "mini-app", "clicker", "nodejs", "bot"],
+  "keywords": [
+    "telegram",
+    "mini-app",
+    "clicker",
+    "nodejs",
+    "bot"
+  ],
   "license": "MIT"
 }
