@@ -1,0 +1,9 @@
+{
+  "name": "Crypto Clicker",
+  "short_name": "Clicker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070711",
+  "theme_color": "#070711",
+  "description": "Telegram Mini App tap-to-earn game"
+}

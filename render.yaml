@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: crypto-clicker-miniapp
+    env: node
+    plan: free
+    buildCommand: ""
+    startCommand: "node server.js"
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NODE_ENV
+        value: production
+      - key: SET_MENU_BUTTON
+        value: true
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        sync: false
